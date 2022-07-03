@@ -3,7 +3,7 @@
 set number
 
 " 开启语法高亮
-syntax on
+syntax enable
 
 " 基于文件类型的插件和缩进
 filetype plugin indent on
@@ -59,12 +59,19 @@ set foldenable
 " 按标记折叠代码
 set foldmethod=marker
 
-" molokai  Colorscheme
 set t_Co=256
 let g:rehash256 = 1
-let g:molokai_original = 1
-colorscheme molokai
+" molokai  Colorscheme
+"let g:molokai_original = 1
+"colorscheme molokai
 
+" solarized
+"set background=light
+"colorscheme solarized
+
+" gruvbox 
+set background=light
+colorscheme gruvbox
 
 " TextEdit might fail if hidden is not set.
 set hidden

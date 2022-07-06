@@ -1,6 +1,6 @@
 " ===============================基础配置================================
 " 显示行号；取消显示可输入 set nonu
-set number
+set relativenumber number
 
 " 开启语法高亮
 syntax enable
@@ -62,15 +62,15 @@ set foldmethod=marker
 set t_Co=256
 let g:rehash256 = 1
 " molokai  Colorscheme
-"let g:molokai_original = 1
-"colorscheme molokai
+" let g:molokai_original = 1
+" colorscheme molokai
 
 " solarized
 "set background=light
 "colorscheme solarized
 
 " gruvbox 
-set background=light
+set background=dark
 colorscheme gruvbox
 
 " TextEdit might fail if hidden is not set.
@@ -92,6 +92,7 @@ let mapleader = "\<space>"
 "定义 mm返回最新修改的位置
 map mm '.zz
 
+
 " Enable to copy to clipboard for operations like yank, delete, change and put
 " http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
 if has('unnamedplus')
@@ -106,84 +107,34 @@ call plug#begin('~/.vim/plugged')
 """""""""""""""""""""
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'fatih/vim-go'
 Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-commentary'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'majutsushi/tagbar'
 Plug 'easymotion/vim-easymotion'
 Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-"Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'fatih/molokai'
 Plug 'tpope/vim-fugitive'
 call plug#end()
 
 
-" vim-commentary
-" gcc 快速注释/取消注释光标所在行，
-" gc 注释/取消选中区域，
-
-" vim-go
-let g:go_fmt_command = 'goimports'
-let g:go_autodetect_gopath = 1
-let g:go_list_type = "quickfix"
-
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_generate_tags = 1
-
-" Open :GoDeclsDir with ctrl-g 函数搜索
-nmap <C-g> :GoDeclsDir<cr>
-imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
-
-" Jump to next error with Ctrl-n and previous error with Ctrl-m. Close the
-" quickfix window with <leader>a
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
-
-augroup go
-  autocmd!
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-augroup END
-
-" build_go_files is a custom function that builds or compiles the test file.
-" It calls :GoBuild if its a Go file, or :GoTestCompile if it's a test file
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
-
 " fzf  < C-n > < C-p > 上下选择
+" 多文件搜索grepprg 替换ripgrep
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow 
 " 快速搜索项目中的文件
 map <leader>f :Files<CR>
 "  打开buffer列表快速切换文件
 map <leader>b :Buffers<CR>
 let g:fzf_action = { 'ctrl-e': 'edit' }
-" 用 leader+ag 搜索当前 cursor 下单词 see: https://github.com/junegunn/fzf.vim/issues/50
-nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
+" 用 leader+rg 搜索当前
+nnoremap <silent> <Leader>rg :Rg<CR>
 
 " NERDTree set
 " 快速跳到当前文件在目录位置
 nnoremap <leader>v :NERDTre feFind<cr>
 " 打开侧边栏目录
 nnoremap <leader>t :NERDTreeToggle<cr>
-
-" tagbar 
-" 打开/关闭右侧 tarbar窗口 
-nnoremap <leader>g :TagbarToggle<cr>
 
 
 " easymotion
@@ -214,10 +165,6 @@ inoremap <silent><expr> <c-z> coc#refresh()
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)

@@ -6,6 +6,5 @@
       "trace.server": "verbose",
       "filetypes": ["go"]
     }
-  },
-  "snippets.userSnippetsDirectory": "~/.vim/snippets/"
+  }
 }

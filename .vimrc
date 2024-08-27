@@ -86,7 +86,7 @@ set updatetime=300
 
 " ===============================快捷键配置================================
 " Set leader shortcut to a comma ','. By default it's the backslash
-let mapleader = "\<space>"
+let mapleader = "<space>"
 " let mapleader=","
 
 "定义 mm返回最新修改的位置
@@ -101,7 +101,7 @@ if has('unnamedplus')
 endif
 
 " ===============================插件配置================================
-call plug#begin('~/.vim/plugged')
+call plug#begin()
 """""""""""""""""""""
 "      Plugins      "
 """""""""""""""""""""
@@ -110,7 +110,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'morhetz/gruvbox'
 Plug 'easymotion/vim-easymotion'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -124,7 +124,7 @@ call plug#end()
 set grepprg=rg\ --vimgrep\ --smart-case\ --follow 
 " 快速搜索项目中的文件
 map <leader>f :Files<CR>
-"  打开buffer列表快速切换文件
+"https://github.com/byustc/vim.githttps://github.com/byustc/vim.githttps://github.com/byustc/vim.git  打开buffer列表快速切换文件
 map <leader>b :Buffers<CR>
 let g:fzf_action = { 'ctrl-e': 'edit' }
 " 用 leader+rg 搜索当前
@@ -141,59 +141,4 @@ nnoremap <leader>t :NERDTreeToggle<cr>
 " 目标单词的2字母,进行查找
 nmap ss <Plug>(easymotion-s2)
 
-" coc.nvim Remap keys for gotos < C-n > < C-p > 上下选
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ CheckBackspace() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-"inoremap <silent><expr> <c-space> coc#refresh()
-inoremap <silent><expr> <c-z> coc#refresh()
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gm <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call ShowDocumentation()<CR>
-
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
 

@@ -125,8 +125,8 @@ vnoremap J :move '>+1<CR>gv-gv
 vnoremap K :move '<-2<CR>gv-gv
 
 "insert 模式下，跳到行首行尾
-nnoremap <C-h> <ESC>I
-nnoremap <C-l> <ESC>A
+inoremap <C-h> <ESC>I
+inoremap <C-l> <ESC>A
 
 " 管理 buffer
 "关闭当前 buffer
@@ -174,6 +174,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
 Plug 'majutsushi/tagbar'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'bling/vim-bufferline'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -201,11 +202,11 @@ colorscheme gruvbox
 
 "==================nerdtree===============
 "快速跳到当前文件在目录位置
-nnoremap <leader>nf :NERDTreeFind<cr>
+nnoremap <leader>v :NERDTreeFind<cr>
 " 开侧边栏目录
-nnoremap <leader>nn :NERDTreeToggle<cr>
+nnoremap <leader>g :NERDTreeToggle<cr>
 " 开书签
-nnoremap <leader>nt :NERDTreeFromBookmark<cr>
+nnoremap <leader>b :NERDTreeFromBookmark<cr>
 " 不显示隐藏文件
 let NERDTreeHidden=0
 " 过滤: 所有指定文件和文件夹不显示
@@ -231,8 +232,7 @@ nnoremap <C-f> :RG<cr>
 nnoremap <C-b> :Buffers<cr>
 "Files [PATH]模糊搜索目录
 nnoremap <C-p> :Files<cr>
-"Tags [QUERY] 查找当前项目的tags （Ctags -R）
-nnoremap <leader-t> :Tags<cr>
+nnoremap <leader>tt :Tags<cr>
 
 
 "==================far===============
@@ -282,7 +282,7 @@ let g:rainbow_active = 1
 
 "=================tagbar==============
 " tagbar 关闭打开快捷键
-nnore map <silent> <C-t> :TagbarToggle<CR>
+nnore map <silent> <leader>t :TagbarToggle<CR>
 let g:tagbar_ctags_bin = '/opt/homebrew/bin/ctags'
 let g:tagbar_width = 30
 "光标即在tagbar页面内
@@ -316,7 +316,7 @@ let g:tagbar_type_go = {
         \ 'ctagsbin'  : 'gotags',
         \ 'ctagsargs' : '-sort -silent'
 \ }
-autocmd BufReadPost *.go call tagbar#autoopen()
+" autocmd BufReadPost *.go call tagbar#autoopen()
 
 " <CR>: 回车跳到定义位置
 " p: 跳到定义位置，但光标仍然在tagbar原位置
@@ -340,3 +340,9 @@ autocmd BufReadPost *.go call tagbar#autoopen()
 let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
 let g:deoplete_go_use_gopls = 1
+
+
+"=================bufferline==============
+let g:bufferline_active_buffer_left = '['
+let g:bufferline_active_buffer_right = ']'
+

@@ -84,36 +84,71 @@ let mapleader = " "
 map mm '.zz
 
 "插入模式和普通模式下的保存快捷键
-inoremap <leader>w <Esc>:w<cr>
-noremap <leader>w :w<cr>
+inoremap <leader>s <Esc>:w<cr>
+noremap <leader>s :w<cr>
 
 "退出插入模式
 inoremap jj <ESC>`^
 
-"视觉模式
-"单行或多行移动
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv 
 
-" use hjkl move window
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-
-"窗口
+"windows 分屏快捷键
 "水平新增窗口
-nnoremap <leader>sv <C-w>v
+nnoremap sv <C-w>v
 "垂直新增窗口
-nnoremap <leader>sh <C-w>s
+nnoremap sh <C-w>s
+"关闭当前窗口
+nnoremap sc <C-w>c
+"关闭其他
+nnoremap so <C-w>o
+
+"<leader> + hjkl  窗口之间跳转
+nnoremap <leader>w <C-w>w
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
+
+"左右比例控制
+nnoremap <C-Left> :vertical resize -6<CR>
+nnoremap <C-Right> :vertical resize +6<CR>
+nnoremap <C-Down> :resize +6<CR>
+nnoremap <C-Up> :resize -6<CR>
+"等比例
+nnoremap <C-=> <C-w>=
+
+"visual模式下缩进代码
+vnoremap < <gv
+vnoremap > >gv
+
+"上下移动选中文本
+vnoremap J :move '>+1<CR>gv-gv
+vnoremap K :move '<-2<CR>gv-gv
+
+"insert 模式下，跳到行首行尾
+nnoremap <C-h> <ESC>I
+nnoremap <C-l> <ESC>A
 
 " 管理 buffer
 "关闭当前 buffer
-nnoremap <silent> [[ :bd<CR>
+nnoremap <silent> <C-[> :bd<cr>
 "跳转到上一个 buffer
-nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> <C-h> :bprevious<CR>
 "跳转到下一个 buffer
-nnoremap <silent> ( n :bnext<CR>
+nnoremap <silent> <C-l> :bnext<CR>
+
+"上下滚动浏览
+nnoremap <C-j> 4j
+nnoremap <C-k> 4k
+"ctrl u / ctrl + d  只移动9行，默认移动半屏
+nnoremap <C-u> 10k
+nnoremap <C-d> 10j
+
+"在visual 模式里粘贴不要复制
+vnoremap p "_dP
+
+"退出
+nnoremap q :q<CR>
+nnoremap qq :q!<CR>
 
 "取消高亮
 nnoremap <leader>nh :nohl<CR>
@@ -121,7 +156,6 @@ nnoremap <leader>nh :nohl<CR>
 
 "================vim-plug===================
 call plug#begin()
-
 " List your plugins here
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -137,20 +171,25 @@ Plug 'lfv89/vim-interestingwords'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
+Plug 'luochen1990/rainbow'
 Plug 'majutsushi/tagbar'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp', { 'do': 'pip install -r requirements.txt' }
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 
-Plug 'luochen1990/rainbow'
+Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
+Plug 'sbdchd/neoformat'
 Plug 'dense-analysis/ale'
+
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 call plug#end()
 
 "==================gruvbox===============
@@ -167,12 +206,10 @@ nnoremap <leader>nf :NERDTreeFind<cr>
 nnoremap <leader>nn :NERDTreeToggle<cr>
 " 开书签
 nnoremap <leader>nt :NERDTreeFromBookmark<cr>
-
 " 不显示隐藏文件
 let NERDTreeHidden=0
 " 过滤: 所有指定文件和文件夹不显示
 let NERDTreeIgnore = ['\.pyc$', '\.swp', '\.swo', '\.vscode','\.DS_Store$ ', '__pycache__']
-
 
 
 "==================fzf===============
@@ -185,16 +222,17 @@ let g:fzf_buffers_jump = 1
 "let g:fzf_action = { 'ctrl-c': ['abort', 'cancel'] }
 " [[B]Commits] Customize the options used by 'git log':
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
 
 "Rg [PATTERN] 使用rg工具在当前项目中模糊搜索字符串
-nnoremap <leader>r :RG<cr>
-"History 来查看最近打开的文件和缓冲区
-nnoremap <leader>h :History<cr>
+nnoremap <C-f> :RG<cr>
 "Buffers 打开缓冲区
-nnoremap <leader>b :Buffers<cr>
+nnoremap <C-b> :Buffers<cr>
 "Files [PATH]模糊搜索目录
-nnoremap <leader>f :Files<cr>
-
+nnoremap <C-p> :Files<cr>
+"Tags [QUERY] 查找当前项目的tags （Ctags -R）
+nnoremap <leader-t> :Tags<cr>
 
 
 "==================far===============
@@ -242,12 +280,14 @@ map <Leader><leader>. <Plug>(easymotion-repeat)
 " rainbow激活
 let g:rainbow_active = 1
 
-"=================tagbar===============
+"=================tagbar==============
 " tagbar 关闭打开快捷键
-nnoremap <silent> <leader>t :TagbarToggle<CR>
+nnore map <silent> <C-t> :TagbarToggle<CR>
 let g:tagbar_ctags_bin = '/opt/homebrew/bin/ctags'
 let g:tagbar_width = 30
+"光标即在tagbar页面内
 let g:tagbar_autofocus = 1
+"设置标签不排序，默认排序
 let g:tagbar_sort = 0
 let g:tagbar_type_go = {
         \ 'ctagstype' : 'go',
@@ -278,26 +318,25 @@ let g:tagbar_type_go = {
 \ }
 autocmd BufReadPost *.go call tagbar#autoopen()
 
+" <CR>: 回车跳到定义位置
+" p: 跳到定义位置，但光标仍然在tagbar原位置
+" P: 打开一个预览窗口显示标签内容，如果在标签处回车跳到vim编辑页面内定义处，则预览窗口关闭
+" o 在折叠与展开间切换，按o键，折叠标签，再按一次o，则展开标签，如此来回切换
+
+" s: 切换排序，一次s，则让标签按字典排序，再一次s，则按照文件内出现顺序排序
+" x: 是否展开tagbar标签栏，x展开，再一次x，则缩小标签栏
 
 
-"=================vim-go===============
-autocmd BufWritePre *.go :silent! GoFmt
+"=================vim-go==============
+"go to defination:GoDef gd/ctrl-]
+"go back:GoDefPopctrl-t
+"显示jumpstack:GoDefStack
+"清理jumpstack:GoDefStackClear
+"
 
+"=================deoplete==============
 
-
-"=================deoplete===============
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
 let g:deoplete_go_use_gopls = 1
-
-
-
-
-"=================tagbar===============
-
-
-
-
-"=================tagbar===============
-

@@ -172,26 +172,11 @@ Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
-Plug 'majutsushi/tagbar'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'bling/vim-bufferline'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp', { 'do': 'pip install -r requirements.txt' }
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
 
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
-Plug 'sbdchd/neoformat'
-Plug 'dense-analysis/ale'
-
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
 call plug#end()
+
 
 "==================gruvbox===============
 set t_Co=256
@@ -279,67 +264,6 @@ map <Leader><leader>. <Plug>(easymotion-repeat)
 "=================rainbowa==============
 " rainbow激活
 let g:rainbow_active = 1
-
-"=================tagbar==============
-" tagbar 关闭打开快捷键
-nnore map <silent> <leader>t :TagbarToggle<CR>
-let g:tagbar_ctags_bin = '/opt/homebrew/bin/ctags'
-let g:tagbar_width = 30
-"光标即在tagbar页面内
-let g:tagbar_autofocus = 1
-"设置标签不排序，默认排序
-let g:tagbar_sort = 0
-let g:tagbar_type_go = {
-        \ 'ctagstype' : 'go',
-        \ 'kinds'     : [
-                \ 'p:package',
-                \ 'i:imports:1',
-                \ 'c:constants',
-                \ 'v:variables',
-                \ 't:types',
-                \ 'n:interfaces',
-                \ 'w:fields',
-                \ 'e:embedded',
-                \ 'm:methods',
-                \ 'r:constructor',
-                \ 'f:functions'
-        \ ],
-        \ 'sro' : '.',
-        \ 'kind2scope' : {
-                \ 't' : 'ctype',
-                \ 'n' : 'ntype'
-        \ },
-        \ 'scope2kind' : {
-                \ 'ctype' : 't',
-                \ 'ntype' : 'n'
-        \ },
-        \ 'ctagsbin'  : 'gotags',
-        \ 'ctagsargs' : '-sort -silent'
-\ }
-" autocmd BufReadPost *.go call tagbar#autoopen()
-
-" <CR>: 回车跳到定义位置
-" p: 跳到定义位置，但光标仍然在tagbar原位置
-" P: 打开一个预览窗口显示标签内容，如果在标签处回车跳到vim编辑页面内定义处，则预览窗口关闭
-" o 在折叠与展开间切换，按o键，折叠标签，再按一次o，则展开标签，如此来回切换
-
-" s: 切换排序，一次s，则让标签按字典排序，再一次s，则按照文件内出现顺序排序
-" x: 是否展开tagbar标签栏，x展开，再一次x，则缩小标签栏
-
-
-"=================vim-go==============
-"go to defination:GoDef gd/ctrl-]
-"go back:GoDefPopctrl-t
-"显示jumpstack:GoDefStack
-"清理jumpstack:GoDefStackClear
-"
-
-"=================deoplete==============
-
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-set completeopt-=preview
-let g:deoplete_go_use_gopls = 1
 
 
 "=================bufferline==============

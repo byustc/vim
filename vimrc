@@ -83,30 +83,25 @@ let mapleader = " "
 "定义 mm返回最新修改的位置
 map mm '.zz
 
-"插入模式和普通模式下的保存快捷键
-inoremap <leader>s <Esc>:w<cr>
-noremap <leader>s :w<cr>
-
 "退出插入模式
 inoremap jj <ESC>`^
-
 
 "windows 分屏快捷键
 "水平新增窗口
 nnoremap sv <C-w>v
 "垂直新增窗口
 nnoremap sh <C-w>s
-"关闭当前窗口
+"关闭当前laga
 nnoremap sc <C-w>c
 "关闭其他
 nnoremap so <C-w>o
 
-"<leader> + hjkl  窗口之间跳转
-nnoremap <leader>w <C-w>w
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
+"<Ctrl> + hjkl  窗口之间跳转
+nnoremap <C-w> <C-w>w
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 "左右比例控制
 nnoremap <C-Left> :vertical resize -6<CR>
@@ -119,40 +114,18 @@ nnoremap <C-=> <C-w>=
 "visual模式下缩进代码
 vnoremap < <gv
 vnoremap > >gv
-
 "上下移动选中文本
 vnoremap J :move '>+1<CR>gv-gv
 vnoremap K :move '<-2<CR>gv-gv
 
-"insert 模式下，跳到行首行尾
-inoremap <C-h> <ESC>I
-inoremap <C-l> <ESC>A
 
 " 管理 buffer
 "关闭当前 buffer
-nnoremap <silent> <C-[> :bd<cr>
+nnoremap <silent> <S-[> :bd<cr>
 "跳转到上一个 buffer
-nnoremap <silent> <C-h> :bprevious<CR>
+nnoremap <silent> <S-h> :bprevious<CR>
 "跳转到下一个 buffer
-nnoremap <silent> <C-l> :bnext<CR>
-
-"上下滚动浏览
-nnoremap <C-j> 4j
-nnoremap <C-k> 4k
-"ctrl u / ctrl + d  只移动9行，默认移动半屏
-nnoremap <C-u> 10k
-nnoremap <C-d> 10j
-
-"在visual 模式里粘贴不要复制
-vnoremap p "_dP
-
-"退出
-nnoremap q :q<CR>
-nnoremap qq :q!<CR>
-
-"取消高亮
-nnoremap <leader>nh :nohl<CR>
-
+nnoremap <silent> <S-l> :bnext<CR>
 
 "================vim-plug===================
 call plug#begin()
@@ -162,18 +135,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'yggdroot/indentline'
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
-Plug 'scrooloose/nerdtree'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'brooth/far.vim'
 Plug 'tpope/vim-commentary'
-Plug 'lfv89/vim-interestingwords'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
 Plug 'bling/vim-bufferline'
-
 
 call plug#end()
 
@@ -183,46 +150,6 @@ set t_Co=256
 let g:rehash256 = 1
 set background=dark
 colorscheme gruvbox
-
-
-"==================nerdtree===============
-"快速跳到当前文件在目录位置
-nnoremap <leader>v :NERDTreeFind<cr>
-" 开侧边栏目录
-nnoremap <leader>g :NERDTreeToggle<cr>
-" 开书签
-nnoremap <leader>b :NERDTreeFromBookmark<cr>
-" 不显示隐藏文件
-let NERDTreeHidden=0
-" 过滤: 所有指定文件和文件夹不显示
-let NERDTreeIgnore = ['\.pyc$', '\.swp', '\.swo', '\.vscode','\.DS_Store$ ', '__pycache__']
-
-
-"==================fzf===============
-"AG [PATTERN]模糊搜索字符串
-"Files [PATH]模糊搜索目录
-let g:fzf_preview_window = ['right:hidden', 'ctrl-/']
-let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'rounded' } }
-" [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
-"let g:fzf_action = { 'ctrl-c': ['abort', 'cancel'] }
-" [[B]Commits] Customize the options used by 'git log':
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-" [Tags] Command to generate tags file
-let g:fzf_tags_command = 'ctags -R'
-
-"Rg [PATTERN] 使用rg工具在当前项目中模糊搜索字符串
-nnoremap <C-f> :RG<cr>
-"Buffers 打开缓冲区
-nnoremap <C-b> :Buffers<cr>
-"Files [PATH]模糊搜索目录
-nnoremap <C-p> :Files<cr>
-nnoremap <leader>tt :Tags<cr>
-
-
-"==================far===============
-"Far foo bar **/*.py
-"Fardo
 
 
 "==================vim-commentary===============
@@ -235,24 +162,23 @@ autocmd FileType python,shell,coffee set commentstring=#\ %s
 "修改注释风格
 autocmd FileType java,php,go,c,cpp set commentstring=//\ %s
 
-
-"=================vim-interestwords===============
-" Highlight with <Leader>k
-" Navigate highlighted words with n and N
-" Clear every word highlight with <Leader>K throughout the buffer
-
-
 " =================easymotion===============
-nmap ss <Plug>(easymotion-s2)
 let g:EasyMotion_smartcase = 1
-"let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
-map <Leader><leader>h <Plug>(easymotion-linebackward)
-map <Leader><Leader>j <Plug>(easymotion-j)
-map <Leader><Leader>k <Plug>(easymotion-k)
-map <Leader><leader>l <Plug>(easymotion-lineforward)
-" 重复上一次操作, 类似repeat插件, 很强大
-map <Leader><leader>. <Plug>(easymotion-repeat)
 
+" <Leader>f{char} to move to {char}
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+
+" s{char}{char} to move to {char}{char}
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
 
 "=================vim-surround===============
 " ds (delete a surrounding)  ds "
